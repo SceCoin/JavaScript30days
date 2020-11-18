@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 
@@ -58,61 +60,34 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
   <script>
-    function playAudio(e) {
-      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-      const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    window.addEventListener('keydown', function (e) {
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)  // 通过键盘点击获取audio元素
+      const key = document.querySelector(`div[data-key="${e.keyCode}"]`)
+      if (!audio) {
+        return
+      }
 
-      if(!audio) return;
-      audio.currentTime = 0;
-      audio.play();
-      key.classList.add('playing');
+      audio.currentTime = 0 // currentTime为0是为了能够连按, 没设置必须等声音结束才能再执行.
+      audio.play()
+      key.classList.add("playing")
+    })
+
+    // 监听 keyup也可以有同样删除playing样式效果, 但是不会出现连按效果.
+    // window.addEventListener('keyup', function (e) {
+    //   const key = document.querySelector(`div[data-key="${e.keyCode}"]`)
+    //   key.classList.remove("playing")
+    // })
+
+    // 下面监听transitionedn如果长按键盘会导致没法触发回调函数, 无法删除 playing样式, 删掉 removeTranstion()里的if可以解决
+    function removeTranstion(e) {
+      // if (e.propertyName !== 'transform') return
+      this.classList.remove('playing')
     }
 
-    function removeTransition(e) {
-      if(e.propertyName !== 'border-left-color') return;
-      this.classList.remove('playing');
-    }
-
-    const keys = document.querySelectorAll('.key');
-    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-    window.addEventListener('keydown', playAudio);
+    const keys = document.querySelectorAll('.key')
+    keys.forEach(key => key.addEventListener('transitionend', removeTranstion))
   </script>
 
-<script type="text/javascript">
-  'use strict';
-
-  function playSound(event){
-    const keyCode = event.key;
-
-    if ( keyCode === '76') {
-      alert('76');
-    } else {
-      alert('false');
-    }
-  }
-
-  window.addEventListener('keydown', function(e){
-    const audio = document.querySelector(`audio[data-key="${ e.keyCode }"]`);
-    const key = document.querySelector(`div[data-key="${ e.keyCode }"]`);
-    console.log(video);
-    console.log(key);
-    if(!audio) return;
-    audio.currentTime = 0;
-    audio.play();
-    key.classList.add('playing');
-    // key.classList.remove("playing");
-  }, false);
-
-  function removeTransition(e){
-    // if(e.propertyName !== "border-left-color") return;
-    console.log(e.propertyName);
-    // e.target.classList.remove("playing");
-  }
-
-  keys.forEach( keyin => keyin.addEventListener('transitionend', removeTransition));
-
-
-</script>
-
 </body>
+
 </html>
