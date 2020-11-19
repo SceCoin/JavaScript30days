@@ -32,27 +32,26 @@
   <img src="./silder-1.jpg">
 
   <style>
-    /*
-      misc styles, nothing to do with CSS variables
-    */
-
     :root {
-      --spacing: 11px;
+      --spacing: 10px;
       --blur: 5px;
-      --base: #8aa8af;
+      --base: blue;
     }
 
     img {
-      padding: var(--spacing);
-      background: var(--base);
-      filter: blur(var(--blur));
       width: 800px;
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+      background: var(--base);
     }
 
     .hl {
       color: var(--base);
     }
 
+    /*
+      misc styles, nothing to do with CSS variables
+    */
 
     body {
       text-align: center;
@@ -76,6 +75,21 @@
   </style>
 
   <script>
+    // 获取所有的Input, inputs只是一个类数组, 而不真正的数组, 但它有一些数组的方法
+    const inputs = document.querySelectorAll('input')
+
+    function handleUpdate(e) {
+      // 这里的this就是每个dom元素,  dataset可以获得元素所有自定义的属性
+      const suffix = this.dataset.sizing || ""
+
+      // document.documentElement会返回 html 里的 根元素, 也就是 root
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix)
+      document.getElementById(`code-${this.name}`).innerText = this.value + suffix
+    }
+
+    // 为每个Input绑定上处理事件,  mousemove是鼠标滑动时就监听, 而change是确定后再执行.
+    inputs.forEach(input => input.addEventListener('change', handleUpdate))
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate))
 
   </script>
 
