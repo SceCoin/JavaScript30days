@@ -75,30 +75,17 @@
   </style>
 
   <script>
-    // 获取所有的Input, inputs只是一个类数组, 而不真正的数组, 但它有一些数组的方法
     const inputs = document.querySelectorAll('input')
 
-    function handleUpdate(e) {
-      // 这里的this就是每个dom元素,  dataset可以获得元素所有自定义的属性
-      const suffix = this.dataset.sizing || ""
+    function handleChange(e) {
+      const staff = this.dataset.sizing || ""
 
-      // // 设置变量
-      // document.body.style.setProperty('--primary', '#7F583F');
-      // // 读取变量
-      // document.body.style.getPropertyValue('--primary').trim();
-      // // '#7F583F'
-      // // 删除变量
-      // document.body.style.removeProperty('--primary');
-
-      // document.documentElement会返回 html 里的 根元素, 也就是 root
-      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix)
-      document.getElementById(`code-${this.name}`).innerText = this.value + suffix
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + staff)
+      document.getElementById(`code-${this.name}`).innerText = this.value + staff
     }
 
-    // 为每个Input绑定上处理事件,  mousemove是鼠标滑动时就监听, 而change是确定后再执行.
-    inputs.forEach(input => input.addEventListener('change', handleUpdate))
-    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate))
-
+    inputs.forEach(input => input.addEventListener('mousemove', handleChange))
+    inputs.forEach(input => input.addEventListener('change', handleChange))
   </script>
 
 </body>
