@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ajax Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="诗句 诗名 诗人">
+    <ul class="suggestions">
+      <li>输入词句，找一首诗</li>
+      <li></li>
+    </ul>
+  </form>
+  <script>
+    // const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    const endpoint = 'https://gist.githubusercontent.com/soyaine/81399bb2b24ca1bb5313e1985533c640/raw/bdf7df2cbcf70706c4a5e51a7dfb8c933ed78878/TangPoetry.json';
+
+    const poems = []
+    fetch(endpoint)
+      .then(res => res.json())
+      .then(data => poems.push(...data))
+
+    function matchPoem(wordsToMatch, poems) {
+      const regx = new RegExp(wordsToMatch, 'gi')
+      return poems.filter(item => {
+        const author = item.detail_author.join('');
+        return item.detail_text.match(regx) || item.title.match(regx) || author.match(regx)
+      })
+    }
+
+    function displayMatches() {
+
+      const filterArray = matchPoem(this.value, poems)
+
+      const html = filterArray.map(item => {
+        const regx = new RegExp(this.value, 'gi')
+        const keyWord = item.detail_text.replace(regx, `<span class='hl'>${this.value}</span>`)
+        const title = item.title.replace(regx, `<span class="hl">${this.value}</span>`)
+        return `
+          <li>
+            <span class="poet">${keyWord}</span>
+					<span class="title">${title} - ${item.detail_author[0]}</span>
+          </li>
+        `
+      }).join("")
+
+      suggestions.innerHTML = html
+    }
+
+    const search = document.querySelector('.search')
+    const suggestions = document.querySelector('.suggestions')
+
+    search.addEventListener('change', displayMatches)
+    search.addEventListener('keyup', displayMatches)
+
+  </script>
+</body>
+
+</html>
