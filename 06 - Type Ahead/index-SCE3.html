@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+  <script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    // 先获取数据
+    const citys = []
+    fetch(endpoint)
+      .then(res => res.json())
+      .then(data => citys.push(...data))
+
+    // 过滤数据后获得需要的数据
+    function matchValue(wordsToMatch, citys) {
+      let regx = new RegExp(wordsToMatch, 'gi')
+      return citys.filter(item => {
+        return item.city.match(regx) || item.state.match(regx)
+      })
+    }
+
+    // 数字可以分割成千分位
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // 展示数据, 主要是把数据 用 map换成 dom节点
+    function displayMatches() {
+      const matchArray = matchValue(this.value, citys)
+
+      const html = matchArray.map(item => {
+        let regx = new RegExp(this.value, 'gi')
+        const city = item.city.replace(regx, `<span class='hl'>${this.value}</span>`)
+        const state = item.state.replace(regx, `<span class='hl'>${this.value}</span>`)
+
+        return `
+        <li>
+          <span class='name'>${city}, ${state}</span>
+          <span class='population'>${numberWithCommas(item.population)}</span>
+        </li>
+        `
+      }).join("")
+
+      suggestions.innerHTML = html
+    }
+
+    // js操控dom
+    const search = document.querySelector('.search')
+    const suggestions = document.querySelector('.suggestions')
+
+    search.addEventListener('change', displayMatches)
+    search.addEventListener('keyup', displayMatches)
+
+  </script>
+</body>
+
+</html>
