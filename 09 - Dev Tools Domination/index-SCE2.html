@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+
+<body>
+
+  <p onClick="makeGreen()">按F12查看</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('hello')
+
+    // Interpolated
+    console.log('%s 前面的你好字符串是拼接而成的', '你好,')
+
+    // Styled
+    console.log('%c /%c是用来可以设置style的', 'font-size:32px; color:red;')
+
+    // warning!
+    console.warn('这个警告其实没啥用')
+
+    // Error :|
+    console.error('错误提示也是同理, 一般不会自己写错误提示')
+
+    // Info
+    console.info('这个没看出来跟log又什么差异')
+
+    // Testing
+    console.assert(1 == 1, '这个assert还是有点用的, 断言')
+
+    // clearing
+    // console.clear()
+
+    // Viewing DOM Elements
+    const p = document.querySelector('p')
+    console.dir(p)
+    console.log(p)
+    console.log("用dir看P节点, 用log是获取到节点")
+
+    // Grouping together
+    dogs.map(dog => {
+      console.group(`${dog.name}`)
+      console.log(`这个狗的名字是${dog.name}`)
+      console.groupEnd(`${dog.name}`)
+    })
+
+    // counting
+    console.count('count没啥用的计数')
+    console.count('count没啥用的计数')
+    console.count('count没啥用的计数')
+    console.count('count没啥用的计数')
+
+    // timing
+    console.time('fetch data')
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    fetch(endpoint)
+      .then(res => res.json())
+      .then(data => {
+        console.timeEnd('fetch data')
+        console.log(data)
+      })
+
+  </script>
+</body>
+
+</html>
