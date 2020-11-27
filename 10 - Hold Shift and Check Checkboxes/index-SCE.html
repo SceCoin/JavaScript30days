@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Shift 多选</title>
+  <title>Document</title>
 </head>
 
 <body>
@@ -46,7 +46,7 @@
       padding: 20px;
       transition: background 0.2s;
       flex: 1;
-      font-family: 'Microsoft Yahei', 'helvetica neue';
+      font-family: 'helvetica neue';
       font-size: 20px;
       font-weight: 200;
       border-left: 1px solid #D1E2FF;
@@ -66,31 +66,31 @@
   <div class="inbox">
     <div class="item">
       <input type="checkbox">
-      <p>这是一个邮件收件箱</p>
+      <p>This is an inbox layout.</p>
     </div>
     <div class="item">
       <input type="checkbox">
-      <p>选中一项</p>
+      <p>Check one item</p>
     </div>
     <div class="item">
       <input type="checkbox">
-      <p>然后按住 Shift 键</p>
+      <p>Hold down your Shift key</p>
     </div>
     <div class="item">
       <input type="checkbox">
-      <p>选择另外一项</p>
+      <p>Check a lower item</p>
     </div>
     <div class="item">
       <input type="checkbox">
-      <p>它们之间的都会被选中</p>
+      <p>Everything inbetween should also be set to checked</p>
     </div>
     <div class="item">
       <input type="checkbox">
-      <p>试着实现这个功能</p>
+      <p>Try do it with out any libraries</p>
     </div>
     <div class="item">
       <input type="checkbox">
-      <p>只用原生 JS </p>
+      <p>Just regular JavaScript</p>
     </div>
     <div class="item">
       <input type="checkbox">
@@ -98,51 +98,34 @@
     </div>
     <div class="item">
       <input type="checkbox">
-      <p>记得展示你的成果♪(^∇^*)</p>
+      <p>Don't forget to tweet your result!</p>
     </div>
   </div>
 
   <script>
-    const boxs = document.querySelectorAll('.inbox input[type="checkbox"]');
-    const boxArr = Array.from(boxs);
+    const checkboxs = document.querySelectorAll('.inbox input[type=checkbox]')
 
-    let lastChecked;
+    let startCheck;
+    function handleCheck(e) {
+      console.log('start', startCheck)
 
-    //	处理方法一：用变量 inBetween 对需要选中的元素进行标记
-    function handleCheck0(e) {
-      let inBetween = false;
-      //		console.log(lastChecked);
       if (e.shiftKey && this.checked) {
-        boxs.forEach(input => {
-          console.log(input);
-          if (input === lastChecked || input === this) {
-            inBetween = !inBetween;
+        let isBetween = false
+        checkboxs.forEach(checkbox => {
+          if (checkbox == startCheck || checkbox == this) {
+            isBetween = !isBetween
           }
-          if (inBetween) {
-            console.log("on");
-            input.checked = true;
+
+          if (isBetween) {
+            checkbox.checked = true
           }
-        });
+        })
       }
-      lastChecked = this;
+
+      startCheck = this
     }
 
-    let onOff = false;
-    //	处理方法二：利用数组索引获取需要选中的范围
-    function handleCheck1(e) {
-      if (!lastChecked) lastChecked = this;
-      onOff = lastChecked.checked ? true : false;
-      if (e.shiftKey) {
-        let start = boxArr.indexOf(this);
-        let end = boxArr.indexOf(lastChecked);
-        boxArr.slice(Math.min(start, end), Math.max(start, end) + 1)
-          .forEach(input => input.checked = onOff);
-        console.log(start + "+" + end);
-      }
-      lastChecked = this;
-    }
-
-    boxs.forEach(box => box.addEventListener('click', handleCheck1));
+    checkboxs.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
   </script>
 </body>
 

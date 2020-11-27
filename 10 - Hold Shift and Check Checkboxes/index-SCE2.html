@@ -103,46 +103,35 @@
   </div>
 
   <script>
-    const boxs = document.querySelectorAll('.inbox input[type="checkbox"]');
-    const boxArr = Array.from(boxs);
+    const checkboxs = document.querySelectorAll('.inbox input')
+    const inputArr = Array.from(checkboxs)
 
-    let lastChecked;
+    let lastCheck;
+    let onOff = false
 
-    //	处理方法一：用变量 inBetween 对需要选中的元素进行标记
-    function handleCheck0(e) {
-      let inBetween = false;
-      //		console.log(lastChecked);
-      if (e.shiftKey && this.checked) {
-        boxs.forEach(input => {
-          console.log(input);
-          if (input === lastChecked || input === this) {
-            inBetween = !inBetween;
-          }
-          if (inBetween) {
-            console.log("on");
-            input.checked = true;
-          }
-        });
+    function handleCheck(e) {
+      // 第一次选中时 lastCheck为undefined, 所以进入判断, 将 lastCheck赋值为开始的Input
+      if (!lastCheck) {
+        lastCheck = this
       }
-      lastChecked = this;
-    }
+      // onOff就被设为  true
+      onOff = lastCheck.checked ? true : false
 
-    let onOff = false;
-    //	处理方法二：利用数组索引获取需要选中的范围
-    function handleCheck1(e) {
-      if (!lastChecked) lastChecked = this;
-      onOff = lastChecked.checked ? true : false;
       if (e.shiftKey) {
-        let start = boxArr.indexOf(this);
-        let end = boxArr.indexOf(lastChecked);
-        boxArr.slice(Math.min(start, end), Math.max(start, end) + 1)
-          .forEach(input => input.checked = onOff);
-        console.log(start + "+" + end);
+        // 这里面的this是最后选择的那个Input
+        let start = inputArr.indexOf(this)
+        let end = inputArr.indexOf(lastCheck)
+
+        inputArr.slice(Math.min(start, end), Math.max(start, end) + 1)
+          .forEach(input => input.checked = onOff)
       }
-      lastChecked = this;
+
+
+      // 这个是没有按shift但是又不是第一次时将值 赋为最后一次的 Input
+      lastCheck = this
     }
 
-    boxs.forEach(box => box.addEventListener('click', handleCheck1));
+    checkboxs.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
   </script>
 </body>
 
