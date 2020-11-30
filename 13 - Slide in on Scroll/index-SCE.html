@@ -10,7 +10,7 @@
 
   <div class="site-wrap">
 
-    <h1>Slide in on Scroll</h1>
+    <h1>滑动查看图片效果</h1>
 
     <p>Consectetur adipisicing elit. Tempore tempora rerum, est autem cupiditate, corporis a qui libero ipsum delectus
       quidem dolor at nulla, adipisci veniam in reiciendis aut asperiores omnis blanditiis quod quas laborum nam! Fuga
@@ -145,6 +145,8 @@
   </div>
 
   <script>
+
+    // 防抖函数
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function () {
@@ -158,29 +160,33 @@
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
       };
-    };
-
-    const sliderImages = document.querySelectorAll('.slide-in');
-
-    function checkSlide(e) {
-      sliderImages.forEach(sliderImage => {
-        // half way through the image
-        const slideInAt = (window.scrollY + window.innerHeight) - sliderImage.height / 2;
-        // bottom of the image
-        const imageBottom = sliderImage.offsetTop + sliderImage.height;
-
-        const isHalfShown = slideInAt > sliderImage.offsetTop;
-        const isNotScrolledPast = window.scrollY < imageBottom;
-
-        if (isHalfShown && isNotScrolledPast) {
-          sliderImage.classList.add('active');
-        } else {
-          sliderImage.classList.remove('active');
-        }
-      });
     }
 
-    window.addEventListener('scroll', debounce(checkSlide));
+    const images = document.querySelectorAll('.slide-in');
+
+    function handleShow(e) {
+
+      images.forEach(image => {
+        const scrolled = window.scrollY + window.innerHeight
+        const imgToHalf = image.offsetTop + (image.height / 2)
+        const imgBottom = image.offsetTop + image.height
+
+        const isHalfShow = scrolled > imgToHalf
+        const isNotScrollPast = window.scrollY < imgBottom
+
+        if (isHalfShow && isNotScrollPast) {
+          image.classList.add('active')
+        } else {
+          image.classList.remove('active')
+        }
+      })
+    }
+
+
+    window.addEventListener('scroll', debounce(handleShow))
+
+
+
 
   </script>
 
