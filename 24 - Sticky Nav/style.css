@@ -88,3 +88,7 @@ nav a {
 .fixed-nav {
   position:fixed;
 }
+
+.sticky-nav {
+  position: sticky;
+}

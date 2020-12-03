@@ -33,7 +33,33 @@
   </div>
 
   <script>
+    // 1.先创建一个高亮元素, 类加上 highlight
+    const span = document.createElement('span')
+    span.classList.add('highlight')
+    document.body.appendChild(span)
+    span.style.display = 'none';
 
+
+    // 3. 处理事件, 获取到a元素的位置和大小信息, 然后用来修改 高亮元素的内容.
+    function flow(e) {
+      const linkRect = this.getBoundingClientRect()
+
+      const linkStyle = {
+        width: linkRect.width,
+        height: linkRect.height,
+        left: linkRect.left + window.scrollX,
+        top: linkRect.top + window.scrollY,
+      }
+
+      span.style.width = `${linkStyle.width}px`
+      span.style.height = `${linkStyle.height}px`
+      span.style.transform = `translate(${linkStyle.left}px, ${linkStyle.top}px)`
+      span.style.display = 'inline'
+    }
+
+    // 2. 给每个a元素添加上 mouseenter事件
+    const links = document.querySelectorAll('a')
+    links.forEach(link => link.addEventListener('mouseenter', flow))
   </script>
 </body>
 
