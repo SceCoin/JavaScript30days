@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Click and Drag</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="items">
+    <div class="item item1">鼠</div>
+    <div class="item item2">标</div>
+    <div class="item item3">点</div>
+    <div class="item item4">击</div>
+    <div class="item item5">与</div>
+    <div class="item item6">拖</div>
+    <div class="item item7">动</div>
+    <div class="item item8">实</div>
+    <div class="item item9">现</div>
+    <div class="item item10">水</div>
+    <div class="item item11">平</div>
+    <div class="item item12">方</div>
+    <div class="item item13">向</div>
+    <div class="item item14">移</div>
+    <div class="item item15">动</div>
+    <div class="item item16">效</div>
+    <div class="item item17">果</div>
+  </div>
+  <script>
+    const silder = document.querySelector('.items')
+    let startX;
+    let isDown = false
+    let scrollLeft
+
+    // 需要监听四个事件, 鼠标按下, 鼠标松开, 鼠标移出, 鼠标移动
+
+    silder.addEventListener('mousedown', (e) => {
+      isDown = true
+
+      silder.classList.add('active')
+
+      startX = e.pageX - silder.offsetLeft
+      scrollLeft = silder.scrollLeft
+    })
+
+    silder.addEventListener('mouseup', () => {
+      isDown = false
+      silder.classList.remove('active')
+    })
+
+    silder.addEventListener('mouseleave', () => {
+      isDown = false
+      silder.classList.remove('active')
+    })
+
+    silder.addEventListener('mousemove', (e) => {
+      if (!isDown) return
+
+      const x = e.pageX - silder.offsetLeft
+      const walk = (x - startX) * 3
+
+      silder.scrollLeft = scrollLeft - walk;
+
+    })
+  </script>
+
+</body>
+
+</html>

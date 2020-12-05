@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>👀👀👀Follow Along Nav</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav>
+    <ul class="menu">
+      <li><a href="">Home</a></li>
+      <li><a href="">Order Status</a></li>
+      <li><a href="">Tweets</a></li>
+      <li><a href="">Read Our History</a></li>
+      <li><a href="">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <div class="wrapper">
+    <p>Lorem ipsum dolor sit amet, <a href="">consectetur</a> adipisicing elit. Est <a href="">explicabo</a> unde natus
+      necessitatibus esse obcaecati distinctio, aut itaque, qui vitae!</p>
+    <p>Aspernatur sapiente quae sint <a href="">soluta</a> modi, atque praesentium laborum pariatur earum <a
+        href="">quaerat</a> cupiditate consequuntur facilis ullam dignissimos, aperiam quam veniam.</p>
+    <p>Cum ipsam quod, incidunt sit ex <a href="">tempore</a> placeat maxime <a href="">corrupti</a> possimus <a
+        href="">veritatis</a> ipsum fugit recusandae est doloremque? Hic, <a href="">quibusdam</a>, nulla.</p>
+    <p>Esse quibusdam, ad, ducimus cupiditate <a href="">nulla</a>, quae magni odit <a href="">totam</a> ut consequatur
+      eveniet sunt quam provident sapiente dicta neque quod.</p>
+    <p>Aliquam <a href="">dicta</a> sequi culpa fugiat <a href="">consequuntur</a> pariatur optio ad minima, maxime <a
+        href="">odio</a>, distinctio magni impedit tempore enim repellendus <a href="">repudiandae</a> quas!</p>
+  </div>
+
+  <script>
+    // 1.先创建一个高亮元素, 类加上 highlight
+    const span = document.createElement('span')
+    span.classList.add('highlight')
+    document.body.appendChild(span)
+    span.style.display = 'none';
+
+
+    // 3. 处理事件, 获取到a元素的位置和大小信息, 然后用来修改 高亮元素的内容.
+    function flow(e) {
+      const linkRect = this.getBoundingClientRect()
+
+      const linkStyle = {
+        width: linkRect.width,
+        height: linkRect.height,
+        left: linkRect.left + window.scrollX,
+        top: linkRect.top + window.scrollY,
+      }
+
+      span.style.width = `${linkStyle.width}px`
+      span.style.height = `${linkStyle.height}px`
+      span.style.transform = `translate(${linkStyle.left}px, ${linkStyle.top}px)`
+      span.style.display = 'inline'
+    }
+
+    // 2. 给每个a元素添加上 mouseenter事件
+    const links = document.querySelectorAll('a')
+    links.forEach(link => link.addEventListener('mouseenter', flow))
+  </script>
+</body>
+
+</html>

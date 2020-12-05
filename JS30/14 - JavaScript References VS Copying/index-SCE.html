@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS Reference VS Copy</title>
+</head>
+
+<body>
+  <h2>按F12打开Devtool查看 Console</h2>
+  <script>
+    // 从 String、Number、Boolean 类型的值开始：
+
+    let age = 100;
+    let age2 = age;
+    console.log(age, age2);
+    age = 200;
+    console.log(age, age2);
+
+    let name = 'Wes';
+    let name2 = name;
+    console.log(name, name2);
+    name = 'wesley';
+    console.log(name, name2);
+
+    // 首先我们有一个数组
+    const players = ['1', '2', '3', '4'];
+
+    // 现在我们想要复制它
+    const team = players
+
+    console.log('team:', team)
+    console.log('players:', players)
+
+    // 也许你觉得可以直接这样修改复制后的数组:
+    team.push('Yahaha')
+
+    // 但我们修改这个数组的时候会发生什么呢？
+    // 这就是问题所在
+    // NO！ 原数组也被修改过了
+    // 为什么？因为 team 只是这个数组的引用，并不是它的复制。team 和 players 指向的是同一个数组。
+    console.log('team:', team)
+    console.log('players:', players)
+
+    // 所以如何解决这个问题？下面来进行真正的复制吧。
+
+    // one day
+    const newArr = players.slice()
+    console.log('newArr修改前:', newArr)
+    newArr.push('🍉')
+    console.log('newArr修改后(使用slice()):', newArr)
+    console.log('players需改前后:', players)
+
+    // 或者创建一个新数组，然后用 concat 方法来获取它
+
+    const conArr = [].concat(players)
+    console.log('conArr修改前(使用[].concat()):', conArr)
+    conArr.push('🍇')
+    console.log('conArr修改后:', conArr)
+
+    // 再或者用 ES6 里面的扩展语法
+
+    const restArr = [...players]
+    console.log('restArr修改前:(使用扩展...)', restArr)
+    restArr.push('...')
+    console.log('restArr修改后:', restArr)
+
+    // 现在再修改 team5，原数组不会变了
+
+    // 对 Object 类型的数据来说也是一样的，我们用一个 person 例子来说明
+
+    const person = {
+      name: 'sce',
+      age: 18,
+      arr: [1, 2, 3, 4]
+    }
+
+    console.log('person初始值:', person)
+    // 现在又一个 Object 对象
+
+    // 然后以为这样可以复制它:
+    const p2 = person
+    console.log('p2 = person', p2)
+    p2.sex = 'male'
+    console.log('p2修改后:', p2)
+    console.log('person:', person)
+
+    // 到底要怎样才能真正得到它的复制版呢？
+    let p3 = {}
+    p3 = Object.assign(p3, person)
+    console.log('p3修改前', p3)
+    p3.age = 100
+    p3.name = 'zaj'
+    p3.male = 'female'
+    console.log('p3修改后:', p3)
+    console.log('person:', person)
+
+    // 我们满怀期望的希望扩展语法对它也会生效
+
+    let p4 = { ...person }
+    console.log('p4修改前(使用扩展...)', p4)
+    p4.name = 'hahah'
+    p4.age = 30
+    console.log('p4修改后', p4)
+    console.log('当前person', person)
+
+
+    // 需要注意的是：这里的例子里面，我们用的数组和对象都只是一层嵌套，Lodash 有一个深度复制的方法，但你使用之前需要多考虑一下。
+
+    console.log('%c 总结: 对数组来说, 浅拷贝可以使用 Array.from(), slice(), concat(), 扩展运算符', 'color:red; font-size:20px')
+    console.log('%c 对对象来说, 浅拷贝可以使用 Object.assign(), 扩展运算符', 'color:red; font-size:20px')
+  </script>
+
+</body>
+
+</html>

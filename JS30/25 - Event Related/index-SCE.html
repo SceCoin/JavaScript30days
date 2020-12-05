@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+
+<body class="bod">
+
+  <div class="one">
+    one
+    <div class="two">
+      two
+      <div class="three">
+        three
+      </div>
+    </div>
+  </div>
+
+  <h2>理解事件机制, 冒泡和捕捉</h2>
+  <p>冒泡和捕获指的是事件的触发顺序, 而不是事件被传递, 事件是不会传递的, 是每个元素绑定了事件, 然后事件触发顺序</p>
+
+  <style>
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+
+    div {
+      width: 100%;
+      padding: 100px;
+    }
+
+    .one {
+      background: thistle;
+    }
+
+    .two {
+      background: mistyrose;
+    }
+
+    .three {
+      background: coral;
+    }
+  </style>
+
+  <script>
+    const divs = document.querySelectorAll('div')
+    const span = document.createElement('span')
+    const p = document.createElement('p')
+
+    document.body.appendChild(span)
+    span.innerHTML = '冒泡顺序(单击):'
+
+    document.body.appendChild(p)
+    p.innerHTML = '捕获顺序(双击):'
+
+    function log(e) {
+      span.innerHTML += this.classList + ' '
+    }
+
+    function dlog() {
+      p.innerHTML += this.classList + ' '
+    }
+
+    divs.forEach(div => div.addEventListener('dblclick', dlog, {
+      capture: true
+    }))
+
+    divs.forEach(div => {
+      div.addEventListener('click', log, {
+        once: true
+      })
+    })
+  </script>
+</body>
+
+</html>

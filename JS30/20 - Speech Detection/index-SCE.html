@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Detection</title>
+</head>
+
+<body>
+
+  <div class="words" contenteditable>
+  </div>
+
+  <script>
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    // 初始化操作, 建立语音对象
+    const recognition = new SpeechRecognition()
+    recognition.interimResults = true
+    recognition.lang = 'zh-Hans'
+
+    // 创建一个P元素在页面显示内容
+    let p = document.createElement('p')
+    let words = document.querySelector('.words')
+    words.appendChild(p)
+
+
+    // 获得监听到的结果,
+    recognition.addEventListener('result', e => {
+      // 处理获取到的语音转换成文字
+      const transcript = Array.from(e.results)
+        .map(result => result[0])
+        .map(res => res.transcript)
+        .join("")
+
+      // 可以对语音进行过滤, 然后转换成想要的其他内容
+      const filter = transcript
+        .replace('逗号', ', ')
+        .replace('苹果', '')
+
+      p.textContent = filter
+      // console.log(transcript)
+
+      // 这里是为了连续, 而不是重新更新p节点.
+      if (e.results[0].isFinal) {
+        p = document.createElement('p')
+        words.appendChild(p)
+      }
+
+      // 下面这些都是进行特殊操作的行为,
+      if (transcript.includes('clear')) {
+        words.innerHTML = ""
+      }
+
+      if (transcript.includes('红色背景')) {
+        document.body.style.background = 'red'
+      }
+
+      if (transcript.includes('刷新页面')) {
+        document.location.reload()
+      }
+    })
+
+    recognition.addEventListener('end', recognition.start)
+    recognition.start()
+
+  </script>
+
+
+  <style>
+    html {
+      font-size: 10px;
+    }
+
+    body {
+      background: #ffc600;
+      font-family: 'helvetica neue';
+      font-weight: 200;
+      font-size: 20px;
+    }
+
+    .words {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+      padding: 1rem 2rem 1rem 5rem;
+      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
+
+    p {
+      margin: 0 0 3rem;
+    }
+
+    .words:before {
+      content: '';
+      position: absolute;
+      width: 4px;
+      top: 0;
+      left: 30px;
+      bottom: 0;
+      border: 1px solid;
+      border-color: transparent #efe4e4;
+    }
+  </style>
+
+</body>
+
+</html>

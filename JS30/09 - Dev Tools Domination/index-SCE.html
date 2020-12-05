@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+
+<body>
+
+  <p onClick="makeGreen()">按F12打开 Dev Tools</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('hello')
+
+    // Interpolated
+    console.log('hi', 'sce')
+
+    // Styled
+    console.log('%c style size', 'color: red;  font-size:32px')
+
+    // warning!
+    console.warn('warning!')
+
+    // Error :|
+    console.error('Error!')
+
+    // Info
+    console.info('this is info!')
+
+    // Testing
+    console.assert(1 == 1, 'this is wrong! 1 != 2')
+
+    // clearing
+    // console.clear()
+
+    // Viewing DOM Elements
+    const p = document.getElementsByTagName('p')
+    console.dir(p)
+    console.log([p])
+
+    // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`)
+      console.log(`this is ${dog.name}`)
+      console.groupEnd(`${dog.name}`)
+    })
+
+
+    // counting
+    console.count('hi')
+    console.count('hi')
+    console.count('hi')
+    console.count('hi')
+    console.count('hello')
+    console.count('hello')
+    console.count('hello')
+
+    // timing
+
+    console.time('fetch data')
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    fetch(endpoint)
+      .then(res => res.json())
+      .then(data => {
+        console.timeEnd('fetch data')
+        console.log(data)
+      })
+
+  </script>
+</body>
+
+</html>

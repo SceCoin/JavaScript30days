@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+</head>
+
+<body>
+  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+
+  <div class="controls">
+    <label for="spacing">Spacing:</label>
+    <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Base Color</label>
+    <input type="color" name="base" value="#8aa8af">
+    <br>
+
+    <code class="result">
+		img {
+			padding: <label id="code-spacing">10px</label>;
+			filter: blur(<label id="code-blur">10px</label>);
+		  background: <label id="code-base">#8aa8af</label>;
+		}
+	</code>
+  </div>
+
+  <img src="./silder-1.jpg">
+
+  <style>
+    :root {
+      --spacing: 10px;
+      --blur: 5px;
+      --base: blue;
+    }
+
+    img {
+      width: 800px;
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+      background: var(--base);
+    }
+
+    .hl {
+      color: var(--base);
+    }
+
+    /*
+      misc styles, nothing to do with CSS variables
+    */
+
+    body {
+      text-align: center;
+    }
+
+    body {
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 1.5em;
+    }
+
+    .controls {
+      margin-bottom: 1em;
+    }
+
+    input {
+      width: 100px;
+    }
+  </style>
+
+  <script>
+    // 获取所有的Input, inputs只是一个类数组, 而不真正的数组, 但它有一些数组的方法
+    const inputs = document.querySelectorAll('input')
+
+    function handleUpdate(e) {
+      // 这里的this就是每个dom元素,  dataset可以获得元素所有自定义的属性
+      const suffix = this.dataset.sizing || ""
+
+      // // 设置变量
+      // document.body.style.setProperty('--primary', '#7F583F');
+      // // 读取变量
+      // document.body.style.getPropertyValue('--primary').trim();
+      // // '#7F583F'
+      // // 删除变量
+      // document.body.style.removeProperty('--primary');
+
+      // document.documentElement会返回 html 里的 根元素, 也就是 root
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix)
+      document.getElementById(`code-${this.name}`).innerText = this.value + suffix
+    }
+
+    // 为每个Input绑定上处理事件,  mousemove是鼠标滑动时就监听, 而change是确定后再执行.
+    inputs.forEach(input => input.addEventListener('change', handleUpdate))
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate))
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown Timer</title>
+  <!-- <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'> -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="timer">
+    <div class="timer__controls">
+      <button data-time="20" class="timer__button">20 秒</button>
+      <button data-time="300" class="timer__button">5分钟</button>
+      <button data-time="900" class="timer__button">15分钟</button>
+      <button data-time="1200" class="timer__button">20分钟</button>
+      <button data-time="3600" class="timer__button">60分钟</button>
+      <form name="customForm" id="custom">
+        <input type="text" name="minutes" placeholder="输入时间">
+      </form>
+    </div>
+    <div class="display">
+      <h1 class="display__time-left"></h1>
+      <p class="display__end-time"></p>
+    </div>
+  </div>
+
+  <script>
+    const timeDisplay = document.querySelector('.display__time-left')
+    const endTimeDisplay = document.querySelector('.display__end-time')
+
+    const buttons = document.querySelectorAll('button')
+
+    let clearTime
+    // 设置时间倒计时
+    function timer(seconds) {
+      clearInterval(clearTime)
+      let now = Date.now()
+      let then = now + seconds * 1000
+
+      showTime(seconds)
+      showEndTime(then)
+
+      clearTime = setInterval(() => {
+        let rest = Math.round((then - Date.now()) / 1000)
+        showTime(rest)
+        if (rest <= 0) {
+          clearInterval(clearTime)
+        }
+      }, 1000);
+    }
+
+    // 显示时间
+    function showTime(seconds) {
+      const mins = Math.floor(seconds / 60)
+      const sec = seconds % 60
+      const display = `${mins}:${sec < 10 ? "0" : ""}${sec}`
+
+      document.title = `剩余 ${display}`
+      timeDisplay.textContent = display
+    }
+
+    // 显示截止时间
+    function showEndTime(timestamp) {
+      const end = new Date(timestamp)
+      const hours = end.getHours()
+      const minutes = end.getMinutes()
+      const endDisplay = `在 ${hours}:${minutes < 10 ? "0" : ""}${minutes} 停止`
+
+      endTimeDisplay.textContent = endDisplay
+    }
+
+    // 为按钮设置时间
+    function startTime() {
+      // console.log(this)
+      const seconds = this.dataset.time
+      timer(seconds)
+    }
+
+    buttons.forEach(button => button.addEventListener('click', startTime))
+
+    document.customForm.addEventListener('submit', function (e) {
+      e.preventDefault()
+      const mins = this.minutes.value
+      timer(mins * 60)
+    })
+
+  </script>
+</body>
+
+</html>
